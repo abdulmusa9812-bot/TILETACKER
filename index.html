@@ -9,6 +9,10 @@
   <meta property="og:description" content="Get help, contact us, and read FAQs.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#111111">
+
+  <!-- Show Smart App Banner on iOS -->
+  <meta name="apple-itunes-app" content="app-id=6749815132">
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -16,7 +20,7 @@
 <header class="container header">
   <div class="brand">
     <div class="logo">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <rect x="3" y="3" width="7" height="7" rx="2" class="tile t1"/>
         <rect x="14" y="3" width="7" height="7" rx="2" class="tile t2"/>
         <rect x="3" y="14" width="7" height="7" rx="2" class="tile t3"/>
@@ -29,6 +33,7 @@
     </div>
   </div>
   <nav class="nav">
+    <a href="#download">Get the App</a>
     <a href="#faq">FAQ</a>
     <a href="#contact">Contact</a>
     <a href="#privacy">Privacy</a>
@@ -36,6 +41,20 @@
 </header>
 
 <main class="container">
+
+  <!-- New: App Store download section (kept simple, uses your existing button styles) -->
+  <section id="download" class="hero card">
+    <h2>Get the game</h2>
+    <p>Download <strong>Tile Tacker</strong> on the App Store.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://apps.apple.com/gb/app/tile-tacker/id6749815132" rel="noopener">Open in App Store</a>
+      <!-- Optional official badge (add /assets/app-store-badge.svg to your repo if you want the image) -->
+      <a href="https://apps.apple.com/gb/app/tile-tacker/id6749815132" aria-label="Download on the App Store" rel="noopener" style="display:inline-block">
+        <img src="/assets/app-store-badge.svg" alt="Download on the App Store" style="height:54px" onerror="this.style.display='none'">
+      </a>
+    </div>
+  </section>
+
   <section class="hero card">
     <h2>Need help?</h2>
     <p>Thanks for playing <strong>TileStacker</strong>! If you have a question, bug report, or feedback, you’ll find answers below—or contact us directly.</p>
