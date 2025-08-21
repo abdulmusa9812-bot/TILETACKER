@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TileStacker Support</title>
-  <meta name="description" content="Official support page for TileStacker. Get help, contact us, and read FAQs.">
-  <meta property="og:title" content="TileStacker Support">
+  <title>Tile Tacker Support</title>
+  <meta name="description" content="Official support page for Tile Tacker. Get help, contact us, and read FAQs.">
+  <meta property="og:title" content="Tile Tacker Support">
   <meta property="og:description" content="Get help, contact us, and read FAQs.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#111111">
@@ -72,7 +72,13 @@
         if (b) b.style.display = "block";
       }
 
-      // Copy link helper
+      // Hide "Copy link" on iOS (kept for Android/Desktop)
+      if (isIOS()) {
+        const copyBtn = document.getElementById("copy-link");
+        if (copyBtn) copyBtn.style.display = "none";
+      }
+
+      // Copy link helper (Android/Desktop)
       document.getElementById("copy-link")?.addEventListener("click", async (e)=>{
         e.preventDefault();
         try { await navigator.clipboard.writeText(APP_HTTPS); e.target.textContent = "Copied!"; }
@@ -101,7 +107,7 @@
       </svg>
     </div>
     <div class="titles">
-      <h1>TileStacker</h1>
+      <h1>Tile Tacker</h1>
       <p>Official Support</p>
     </div>
   </div>
@@ -146,7 +152,7 @@
 
   <section class="hero card">
     <h2>Need help?</h2>
-    <p>Thanks for playing <strong>TileStacker</strong>! If you have a question, bug report, or feedback, you’ll find answers below—or contact us directly.</p>
+    <p>Thanks for playing <strong>Tile Tacker</strong>! If you have a question, bug report, or feedback, you’ll find answers below—or contact us directly.</p>
     <div class="cta-row">
       <a class="btn primary" href="#contact">Contact Support</a>
       <a class="btn" href="#faq">Read FAQ</a>
@@ -165,7 +171,7 @@
     </details>
     <details>
       <summary>Why do I see ads?</summary>
-      <p>Ads let us keep TileStacker free. We aim to balance monetization with a smooth gameplay experience.</p>
+      <p>Ads let us keep Tile Tacker free. We aim to balance monetization with a smooth gameplay experience.</p>
     </details>
     <details>
       <summary>Can I remove ads?</summary>
@@ -183,7 +189,7 @@
 
   <section id="privacy" class="card">
     <h3>Privacy</h3>
-    <p>TileStacker uses Apple frameworks and third-party advertising (Google AdMob). We do not collect personal information directly.</p>
+    <p><strong>Tile Tacker</strong> uses Apple frameworks and third-party advertising (Google AdMob). We do not collect personal information directly.</p>
     <ul>
       <li>Game Center is used for leaderboards.</li>
       <li>AdMob may use device identifiers to show relevant ads.</li>
@@ -193,7 +199,7 @@
 </main>
 
 <footer class="container footer">
-  <p>© 2025 Abdul Musa — TileStacker</p>
+  <p>© 2025 Abdul Musa — Tile Tacker</p>
 </footer>
 </body>
 </html>
