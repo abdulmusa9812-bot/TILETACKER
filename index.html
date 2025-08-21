@@ -10,17 +10,90 @@
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#111111">
 
-  <!-- Show Smart App Banner on iOS -->
+  <!-- iOS Smart App Banner -->
   <meta name="apple-itunes-app" content="app-id=6749815132">
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* Safety styles in case styles.css is minimal */
+    .btn { cursor: pointer; pointer-events: auto; }
+    .btn.primary { font-weight: 700; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .helper { color:#9ca3af; font-size: 12px; }
+    .card { position: relative; }
+    .banner {
+      display:none; position: sticky; top:0; z-index: 50; padding:10px 14px;
+      background:#111; color:#eee; border-bottom:1px solid #2a2a2a; text-align:center;
+    }
+    .banner .btn { padding:6px 10px; border:1px solid #3a3a3a; border-radius:8px; }
+    .qr { width: 120px; height: 120px; border-radius:12px; background:#fff; overflow:hidden; border:1px solid #2a2a2a; }
+    .row { display:grid; gap:16px; align-items:center; }
+    @media (min-width: 720px){ .row { grid-template-columns: 1fr auto; } }
+    .tiny { font-size:12px; color:#9ca3af; }
+  </style>
+
+  <script>
+    // ---- Store link helpers ----
+    const APP_HTTPS = "https://apps.apple.com/gb/app/tile-tacker/id6749815132";
+    // Directly opens the App Store app on iOS
+    const APP_ITMS  = "itms-apps://itunes.apple.com/app/id6749815132";
+
+    function isIOS(){
+      return /iP(hone|ad|od)/.test(navigator.userAgent);
+    }
+    function isInAppBrowser(){
+      const ua = navigator.userAgent || "";
+      return /(FBAN|FBAV|Instagram|Line|LinkedInApp|Snapchat|TikTok|Twitter|Pinterest)/i.test(ua);
+    }
+
+    function openStore(e){
+      e?.preventDefault?.();
+      // iOS: try the itms-apps scheme first (fast path into App Store app)
+      if (isIOS()) {
+        try { window.location.href = APP_ITMS; } catch(_) {}
+        // fallback in case scheme is blocked
+        setTimeout(() => { window.location.href = APP_HTTPS; }, 350);
+      } else {
+        // Non-iOS → open normal https (new tab keeps support page available)
+        window.open(APP_HTTPS, "_blank", "noopener");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Wire primary button and badge
+      document.getElementById("open-store")?.addEventListener("click", openStore);
+      document.getElementById("badge-store")?.addEventListener("click", openStore);
+
+      // Show banner if inside an in-app browser (they often block app-store jumps)
+      if (isInAppBrowser()) {
+        const b = document.getElementById("inapp-warning");
+        if (b) b.style.display = "block";
+      }
+
+      // Copy link helper
+      document.getElementById("copy-link")?.addEventListener("click", async (e)=>{
+        e.preventDefault();
+        try { await navigator.clipboard.writeText(APP_HTTPS); e.target.textContent = "Copied!"; }
+        catch { window.prompt("Copy this link:", APP_HTTPS); }
+        setTimeout(()=>{ e.target.textContent = "Copy link"; }, 1200);
+      });
+    });
+  </script>
 </head>
 <body>
+
+<!-- In-app browser warning / Safari handoff -->
+<div id="inapp-warning" class="banner">
+  You’re viewing this inside an app’s browser. App Store links can be blocked.
+  <a class="btn" href="https://apps.apple.com/gb/app/tile-tacker/id6749815132" target="_blank" rel="noopener">Open in Safari</a>
+</div>
+
 <header class="container header">
   <div class="brand">
-    <div class="logo">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <div class="logo" aria-hidden="true">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
         <rect x="3" y="3" width="7" height="7" rx="2" class="tile t1"/>
         <rect x="14" y="3" width="7" height="7" rx="2" class="tile t2"/>
         <rect x="3" y="14" width="7" height="7" rx="2" class="tile t3"/>
@@ -42,17 +115,33 @@
 
 <main class="container">
 
-  <!-- New: App Store download section (kept simple, uses your existing button styles) -->
+  <!-- Download / App Store -->
   <section id="download" class="hero card">
     <h2>Get the game</h2>
     <p>Download <strong>Tile Tacker</strong> on the App Store.</p>
-    <div class="cta-row">
-      <a class="btn primary" href="https://apps.apple.com/gb/app/tile-tacker/id6749815132" rel="noopener">Open in App Store</a>
-      <!-- Optional official badge (add /assets/app-store-badge.svg to your repo if you want the image) -->
-      <a href="https://apps.apple.com/gb/app/tile-tacker/id6749815132" aria-label="Download on the App Store" rel="noopener" style="display:inline-block">
-        <img src="/assets/app-store-badge.svg" alt="Download on the App Store" style="height:54px" onerror="this.style.display='none'">
+
+    <div class="row">
+      <div class="cta-row">
+        <a id="open-store" class="btn primary" href="https://apps.apple.com/gb/app/tile-tacker/id6749815132" rel="noopener">
+          Open in App Store
+        </a>
+
+        <!-- Optional official badge (provide /assets/app-store-badge.svg if you have it) -->
+        <a id="badge-store" href="https://apps.apple.com/gb/app/tile-tacker/id6749815132" aria-label="Download on the App Store" rel="noopener" style="display:inline-block">
+          <img src="/assets/app-store-badge.svg" alt="Download on the App Store" style="height:54px" onerror="this.style.display='none'">
+        </a>
+
+        <a id="copy-link" class="btn" href="#">Copy link</a>
+      </div>
+
+      <!-- QR for desktop users -->
+      <a class="qr" href="https://apps.apple.com/gb/app/tile-tacker/id6749815132" rel="noopener" aria-label="QR code to App Store">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Fapps.apple.com%2Fgb%2Fapp%2Ftile-tacker%2Fid6749815132"
+             alt="QR code to download Tile Tacker" width="120" height="120" loading="lazy">
       </a>
     </div>
+
+    <p class="tiny helper">Tip: If tapping doesn’t work inside TikTok/Instagram, tap the ••• menu and choose “Open in Safari”, then tap the button again.</p>
   </section>
 
   <section class="hero card">
