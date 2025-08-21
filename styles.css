@@ -4,12 +4,30 @@
   --text:#eaeaea;
   --muted:#b3b3b3;
   --accent:#6c5ce7;
+  --accent-press:#5a4ad6;
   --border:#1e1e1e;
+  --ring: color-mix(in oklab, #6c5ce7 70%, white);
+  --radius:14px;
+  --shadow: 0 0 0 1px var(--border), 0 6px 24px rgba(0,0,0,.35);
 }
+
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
-.container{max-width:960px;margin:0 auto;padding:20px}
-.header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:24px}
+html,body{
+  margin:0;padding:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:radial-gradient(1200px 700px at 50% -300px,#141414 0,var(--bg) 60%) fixed;
+  color:var(--text);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+::selection{background: color-mix(in oklab, var(--accent) 30%, transparent);}
+
+.container{max-width:960px;margin:0 auto;padding:clamp(16px,3vw,24px);}
+.header{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding-top:6px;padding-bottom:6px;
+}
 .brand{display:flex;gap:12px;align-items:center}
 .logo .tile{opacity:.95}
 .logo .t1{fill:#8E44AD}
@@ -18,17 +36,98 @@ html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,
 .logo .t4{fill:#27AE60}
 .titles h1{margin:0;font-size:20px;font-weight:700;letter-spacing:.2px}
 .titles p{margin:0;color:var(--muted);font-size:13px}
-.nav a{color:var(--text);text-decoration:none;margin-left:16px;opacity:.9}
-.nav a:hover{opacity:1;text-decoration:underline}
-.hero h2{margin-top:0}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin:16px 0}
-.btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid var(--border);text-decoration:none;color:var(--text)}
-.btn.primary{background:var(--accent);border-color:transparent;color:white}
+
+/* Top nav */
+.nav{display:flex;gap:6px;flex-wrap:wrap}
+.nav a{
+  color:var(--text);text-decoration:none;
+  padding:8px 10px;border-radius:8px;opacity:.9
+}
+.nav a:hover{opacity:1;text-decoration:underline;text-underline-offset:3px}
+.nav a:focus-visible{
+  outline:2px solid var(--ring);outline-offset:2px
+}
+
+/* Cards / layout */
+.card{
+  background:linear-gradient(180deg, color-mix(in oklab, var(--card) 92%, #000) 0%, var(--card) 100%);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;margin:16px 0;
+  box-shadow: var(--shadow);
+}
+.hero h2{margin:0 0 6px;font-size:clamp(20px,2.8vw,28px)}
+.hero p{margin-top:6px;color:var(--muted)}
+
+/* CTA row and buttons */
+.cta-row{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;align-items:center}
+.btn{
+  display:inline-block;
+  padding:12px 16px; /* bigger hit target for iPhone */
+  border-radius:12px;
+  border:1px solid var(--border);
+  text-decoration:none;color:var(--text);
+  transition:transform .08s ease, filter .15s ease, box-shadow .15s ease;
+  will-change:transform;
+}
+.btn.primary{background:var(--accent);border-color:transparent;color:#fff}
 .btn:hover{filter:brightness(1.05)}
-.cta-row{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap}
-details{background:#0f0f0f;border:1px solid var(--border);border-radius:10px;padding:12px;margin:10px 0}
-summary{cursor:pointer;font-weight:600}
+.btn:active{transform:translateY(1px);filter:brightness(.98)}
+.btn.primary:active{background:var(--accent-press)}
+.btn:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+
+/* Details / FAQ */
+details{
+  background:#0f0f0f;border:1px solid var(--border);
+  border-radius:12px;padding:12px;margin:10px 0;
+}
+summary{cursor:pointer;font-weight:600;list-style:none}
+summary::-webkit-details-marker{display:none}
+details[open]{box-shadow:0 4px 16px rgba(0,0,0,.25)}
+
+/* Contact list */
 .contact-list{list-style:none;padding:0;margin:0}
-.contact-list li{margin:6px 0}
-.footer{color:var(--muted);text-align:center;padding-bottom:40px}
-@media (max-width:640px){.nav{display:none}}
+.contact-list li{margin:8px 0}
+
+/* Footer */
+.footer{color:var(--muted);text-align:center;padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
+
+/* In-app browser banner */
+.banner{
+  display:none; position:sticky; top:0; z-index:100;
+  padding:10px 14px;
+  background:#0f0f0f; color:#eee; border-bottom:1px solid var(--border);
+  text-align:center;
+}
+.banner .btn{padding:8px 12px;border-radius:10px}
+
+/* Download section helpers (used by your HTML) */
+.row{display:grid;gap:16px;align-items:center}
+@media (min-width:720px){ .row{grid-template-columns:1fr auto} }
+
+.qr{
+  width:120px;height:120px;border-radius:12px;background:#fff;
+  overflow:hidden;border:1px solid var(--border)
+}
+.badge img{display:block;height:54px}
+
+/* Links */
+a{color:inherit}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important}
+}
+
+/* Mobile tweaks */
+@media (max-width:640px){
+  .nav{display:none}
+  .titles h1{font-size:18px}
+  .card{padding:16px}
+  .btn{padding:12px 14px}
+}
+
+/* iOS tap highlight + safe areas */
+:root{ -webkit-tap-highlight-color: rgba(108,92,231,.15); }
+body{ padding-bottom: env(safe-area-inset-bottom,0px); }
